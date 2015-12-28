@@ -63,10 +63,10 @@ def data_process(filename):
                         (title_tf_str, body_tf_str) = seg_and_count(titles, bodies)
                         test_title_tf.append(title_tf_str)
                         test_body_tf.append(body_tf_str)
-                    if sp[0] not in train_user_reads:
-                        train_user_reads[sp[0]] = str(sp[1])
+                    if sp[0] not in test_user_reads:
+                        test_user_reads[sp[0]] = str(sp[1])
                     else:
-                        train_user_reads[sp[0]] += " " + str(sp[1])
+                        test_user_reads[sp[0]] += " " + str(sp[1])
 
 
 
@@ -77,7 +77,7 @@ def data_process(filename):
                 if v < 500 and v > 5:
                     f.write(k + " " + str(v) + "\n")
                     word_number += 1;
-                    print(word_number)
+            print("The total number is: ", word_number)
 
         with open('train_user_reads.txt', 'w') as f:
             for k, v in train_user_reads.items():
@@ -113,7 +113,7 @@ def seg_and_count(titles, bodies):
     words = set()       # store the total word appered in news
 
     #word segmentation
-    #print('word segmentation & remove stop keys')
+    print('word segmentation & remove stop keys')
     title_cuts = []
     for title in titles:
         title_cuts.extend(list(jieba.cut(title)))
@@ -124,10 +124,12 @@ def seg_and_count(titles, bodies):
     #remove stop keys
     title_cuts_without_stopkeys = [word for word in title_cuts if len(word) >= 2 and word not in stopkeys]
     body_cuts_without_stopkeys = [word for word in body_cuts if len(word) >= 2 and word not in stopkeys]
+
     # use set to remove repeated words
     set_title_cuts = set(title_cuts_without_stopkeys)
     set_body_cuts = set(body_cuts_without_stopkeys)
     words = words | set_title_cuts | set_body_cuts
+
     # compute df of each word
     for w in words:
         if w in word_df_dic:
