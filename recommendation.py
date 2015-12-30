@@ -74,7 +74,7 @@ def data_process(filename):
             # filter out the words according to df
             word_number = 0;
             for k, v in word_df_dic.items():
-                if v < 500 and v > 5:
+                if v <= 500 and v >= 4:
                     f.write(k + " " + str(v) + "\n")
                     word_number += 1;
             print("The total number is: ", word_number)
